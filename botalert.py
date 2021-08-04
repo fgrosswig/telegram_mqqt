@@ -1,12 +1,16 @@
 #!/usr/bin/python3
 
 #
-# require telegram.conf
+# require settings.conf
 #
 # structure >>>
 # [TELEGRAM]
 # bot_token = 
 # chat_id = 
+# 
+# [MQTT]
+# SERVER_IP = 127.0.0.1
+# SERVER_PORT = 1883
 
 import paho.mqtt.client as mqtt
 import sys
@@ -38,17 +42,17 @@ def main(argv=None):
     global bot
 
     config_object = ConfigParser()
-    config_object.read('./telegram.conf')
+    config_object.read('./settings.conf')
 
     bot_token = config_object["TELEGRAM"]["BOT_TOKEN"]
     bot_chatID = config_object["TELEGRAM"]["CHAT_ID"]
     bot = telepot.Bot(bot_token)
 
     global client
-    client = mqtt.Client("picture_save_listener")  # Create instance of client with client ID “digi_mqtt_test”
+    client = mqtt.Client("movie_save_listener")  # Create instance of client with client ID “digi_mqtt_test”
     client.on_connect = on_connect  # Define callback function for successful connection
     client.on_message = on_message  # Define callback function for receipt of a message
-    client.connect('127.0.0.1', 1883)
+    client.connect(config_object["MQTT"]["SERVER_IP"], int(config_object["MQTT"]["SERVER_PORT"]))
     client.loop_forever()  # Start networking daemon
 
 if __name__ == "__main__":
