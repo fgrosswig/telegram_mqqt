@@ -18,6 +18,8 @@ import json
 import telepot
 import time
 from configparser import ConfigParser
+from telepot.loop import MessageLoop
+import requests
 import pytest
 
 def on_connect(client, userdata, flags, rc):  # The callback for when the client connects to the broker
@@ -36,6 +38,7 @@ def on_message(client, userdata, msg):  # The callback for when a PUBLISH messag
     else:
         print("No filename, skipping")
 
+
 def main(argv=None):
     global bot_token
     global bot_chatID
@@ -47,6 +50,8 @@ def main(argv=None):
     bot_token = config_object["TELEGRAM"]["BOT_TOKEN"]
     bot_chatID = config_object["TELEGRAM"]["CHAT_ID"]
     bot = telepot.Bot(bot_token)
+
+
 
     global client
     client = mqtt.Client("movie_save_listener")  # Create instance of client with client ID “digi_mqtt_test”
